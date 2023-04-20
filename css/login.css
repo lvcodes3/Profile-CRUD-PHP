@@ -1,0 +1,69 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  background-color: #3066be;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  margin: 0 auto;
+  width: 40%;
+  background-color: #b4c5e4;
+  border: 3px solid black;
+}
+
+h1 {
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+}
+
+form {
+  margin: 0 auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.group {
+  width: 75%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  color: red;
+  margin: 0;
+  padding: 0;
+}
+
+#email,
+#password {
+  width: 100%;
+  border: 1px solid black;
+}
+
+button {
+  width: 20%;
+  color: white;
+  background-color: #3066be;
+  cursor: pointer;
+  transition-duration: 0.5s;
+  border: 1px solid black;
+}
+button:hover {
+  transform: scale(1.03);
+}
