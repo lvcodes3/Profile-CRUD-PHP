@@ -1,6 +1,16 @@
 <?php
-// check to see if already logged in
-
+/*
+// check if user is already logged in
+session_start();
+// unset all of the session variables
+$_SESSION = array();
+// destroy the session.
+session_destroy();
+if (isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === true) {
+header('');
+exit;
+}
+*/
 
 // globals
 $email = "";
@@ -18,6 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $email_error = "Your email is invalid.";
+    } else {
+        if (strlen($email) > 320) {
+            $email_error = "Your email can not be above 320 characters.";
+        }
     }
 
     // get password input and remove all illegal chars
@@ -38,6 +52,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // if no errors exist send data to db
     if ($email_error === "" && $password_error === "" && $color_error === "") {
 
+        // connect to the db
+        require_once "./db/db.php";
+
+        // bcrypt the password
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // insert into db
+        $query = "INSERT INTO users(email, password, color) VALUES('$email', '$password_hash', '$color')";
+        $res = pg_query($con, $query) or die(pg_last_error($con));
+
+        // set php session variables
+        session_start();
+        $_SESSION["loggedin"] = true;
+        $_SESSION["email"] = $email;
+        $_SESSION["color"] = $color;
+
+        // redirect to home page
+        header("location: ./home.php");
     }
 }
 ?>
