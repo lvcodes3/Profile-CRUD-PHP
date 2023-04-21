@@ -1,16 +1,11 @@
 <?php
-/*
-// check if user is already logged in
 session_start();
-// unset all of the session variables
-$_SESSION = array();
-// destroy the session.
-session_destroy();
-if (isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === true) {
-header('');
-exit;
+// check if user is already logged in
+if (!isset($_SESSION["profile_crud_php"]["logged_in"]) || $_SESSION["profile_crud_php"]["logged_in"] !== true) {
+    header("location: ./login.php");
+    exit;
 }
-*/
+
 ?>
 
 <!DOCTYPE html>
@@ -18,17 +13,54 @@ exit;
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Profile CRUD PHP</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="./css/home.css">
 </head>
 
 <body>
     <div class="app">
-        <h1>Home</h1>
+        <header>
+            <div>
+                <h1 id="main">Profile CRUD PHP</h1>
+            </div>
+            <div>
+                <a id="logout" href="./logic/logout.php">Logout</a>
+            </div>
+        </header>
+        <br>
+        <div class="container">
+            <div class="content">
+                <h1>
+                    Welcome Back,
+                    <?= $_SESSION["profile_crud_php"]["email"]; ?>
+                </h1>
+            </div>
+            <div class="content">
+                <h2>
+                    Your favorite color is
+                    <?= $_SESSION["profile_crud_php"]["color"]; ?>.
+                </h2>
+            </div>
+
+        </div>
     </div>
 
     <script type="text/javascript">
+
+        /*
+        const handleLogout = () => {
+            let req = new XMLHttpRequest();
+            req.open("GET", "./logic/logout.php");
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send();
+            req.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    console.log(this.responseText);
+                }
+            }
+        }
+        */
 
     </script>
 </body>

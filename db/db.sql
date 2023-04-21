@@ -10,6 +10,6 @@ CREATE DATABASE profile_crud_php
 CREATE TABLE users (
     pkey SERIAL NOT NULL PRIMARY KEY,
     email VARCHAR(320) UNIQUE NOT NULL,
-    password TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL,
     color VARCHAR(10) NOT NULL
 );

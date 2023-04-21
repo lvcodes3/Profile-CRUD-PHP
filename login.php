@@ -1,39 +1,57 @@
 <?php
-/*
-// check if user is already logged in
 session_start();
-// unset all of the session variables
-$_SESSION = array();
-// destroy the session.
-session_destroy();
-if (isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === true) {
-header('');
-exit;
+// check if user is already logged in
+if (isset($_SESSION["profile_crud_php"]["logged_in"]) && $_SESSION["profile_crud_php"]["logged_in"] === true) {
+    header("location: ./home.php");
+    exit;
 }
-*/
 
 // globals
 $email = "";
 $password = "";
 $login_error = "";
 
-// get post data from the register form
+// get post data from the login form
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // get email input and remove all illegal chars
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
 
-
     // get password input and remove all illegal chars
     $password = htmlspecialchars($_POST["password"]);
 
+    // connect to the db
+    require_once "./db/db.php";
 
-
-    // if no errors exist send data to db
-    /*
-    if ($email_error === "" && $password_error === "") {
+    // check if email exists in db
+    $query = "SELECT * FROM users WHERE email = '$email'";
+    $result = pg_query($con, $query);
+    if (!$result) {
+        echo (pg_last_error($con) . "\n");
+        exit;
+    } else {
+        if (pg_num_rows($result) === 0) {
+            $login_error = "Email is not registered.";
+        }
     }
-    */
+
+    if ($login_error === "") {
+        // fetch row of data
+        $row = pg_fetch_row($result);
+
+        if (password_verify($password, $row[2])) {
+            // set php session variables
+            session_start();
+            $_SESSION["profile_crud_php"]["logged_in"] = true;
+            $_SESSION["profile_crud_php"]["email"] = $row[1];
+            $_SESSION["profile_crud_php"]["color"] = $row[3];
+
+            // redirect to home page
+            header("location: ./home.php");
+        } else {
+            $login_error = "Incorrect Password.";
+        }
+    }
 }
 ?>
 
@@ -71,10 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </p>
         </div>
     </div>
-
-    <script type="text/javascript">
-
-    </script>
 </body>
 
 </html>

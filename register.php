@@ -1,23 +1,19 @@
 <?php
-/*
-// check if user is already logged in
 session_start();
-// unset all of the session variables
-$_SESSION = array();
-// destroy the session.
-session_destroy();
-if (isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === true) {
-header('');
-exit;
+// check if user is already logged in
+if (isset($_SESSION["profile_crud_php"]["logged_in"]) && $_SESSION["profile_crud_php"]["logged_in"] === true) {
+    header("location: ./home.php");
+    exit;
 }
-*/
 
 // globals
 $email = "";
 $password = "";
+$confirm_password = "";
 $color = "";
 $email_error = "";
 $password_error = "";
+$confirm_password_error = "";
 $color_error = "";
 
 // get post data from the register form
@@ -41,6 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $password_error = "Your password must be in the character range of 4-12.";
     }
 
+    // get confirm password input and remove all illegal chars
+    $confirm_password = htmlspecialchars($_POST["confirm-password"]);
+    // validate confirm password
+    if ($password !== $confirm_password) {
+        $confirm_password_error = "Your passwords do not match.";
+    }
+
     // get color input and remove all illegal chars
     $color = htmlspecialchars($_POST["color"]);
     $colors = ["black", "white", "red", "green", "yellow", "blue", "pink", "gray", "brown", "orange", "purple"];
@@ -49,27 +52,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $color_error = "The color you selected is invalid.";
     }
 
-    // if no errors exist send data to db
-    if ($email_error === "" && $password_error === "" && $color_error === "") {
+    // if no errors exist
+    if ($email_error === "" && $password_error === "" && $confirm_password_error === "" && $color_error === "") {
 
         // connect to the db
         require_once "./db/db.php";
 
-        // bcrypt the password
-        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        // check if email already exists in the db
+        $query = "SELECT * FROM users WHERE email = '$email'";
+        $result = pg_query($con, $query);
+        if (!$result) {
+            echo (pg_last_error($con) . "\n");
+            exit;
+        } else {
+            if (pg_num_rows($result) !== 0) {
+                $email_error = "Your email is already registered.";
+            }
+        }
 
-        // insert into db
-        $query = "INSERT INTO users(email, password, color) VALUES('$email', '$password_hash', '$color')";
-        $res = pg_query($con, $query) or die(pg_last_error($con));
+        if ($email_error === "") {
+            // bcrypt the password
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-        // set php session variables
-        session_start();
-        $_SESSION["loggedin"] = true;
-        $_SESSION["email"] = $email;
-        $_SESSION["color"] = $color;
+            // insert into db
+            $query = "INSERT INTO users(email, password, color) VALUES('$email', '$password_hash', '$color')";
+            $result = pg_query($con, $query);
+            if (!$result) {
+                echo (pg_last_error($con) . "\n");
+                exit;
+            } else {
+                // set php session variables
+                session_start();
+                $_SESSION["profile_crud_php"]["logged_in"] = true;
+                $_SESSION["profile_crud_php"]["email"] = $email;
+                $_SESSION["profile_crud_php"]["color"] = $color;
 
-        // redirect to home page
-        header("location: ./home.php");
+                // redirect to home page
+                header("location: ./home.php");
+            }
+        }
     }
 }
 ?>
@@ -100,8 +121,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <p>
                         <?= $password_error; ?>
                     </p>
+                    <p>
+                        <?= $confirm_password_error; ?>
+                    </p>
                     <input id="password" name="password" type="password" placeholder="Password"
                         value="<?= $password; ?>" required />
+                </div>
+
+                <div class="group">
+                    <input id="confirm-password" name="confirm-password" type="password" placeholder="Confirm Password"
+                        value="<?= $confirm_password; ?>" required />
                 </div>
 
                 <div class="group">
@@ -131,10 +160,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </p>
         </div>
     </div>
-
-    <script type="text/javascript">
-
-    </script>
 </body>
 
 </html>
