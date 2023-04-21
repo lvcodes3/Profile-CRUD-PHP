@@ -90,14 +90,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h1>Register</h1>
             <form method="POST" action="">
                 <div class="group">
-                    <p id="email-error">
+                    <p>
                         <?= $email_error; ?>
                     </p>
                     <input id="email" name="email" type="email" placeholder="Email" value="<?= $email; ?>" required />
                 </div>
 
                 <div class="group">
-                    <p id="password-error">
+                    <p>
                         <?= $password_error; ?>
                     </p>
                     <input id="password" name="password" type="password" placeholder="Password"
@@ -105,11 +105,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
                 <div class="group">
-                    <p id="color-error">
+                    <p>
                         <?= $color_error; ?>
                     </p>
                     <select id="color" name="color" required>
-                        <option value="" disabled>Favorite Color</option>
+                        <option value="" disabled>Select your Favorite Color</option>
                         <option value="black">Black</option>
                         <option value="white">White</option>
                         <option value="red">Red</option>
@@ -126,6 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <button type="submit" value="submit">Register</button>
             </form>
+            <p id="login-link">Already have an account?
+                <a href="./login.php">Login</a>
+            </p>
         </div>
     </div>
 

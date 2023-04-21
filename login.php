@@ -52,11 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="form-container">
             <h1>Login</h1>
             <form method="POST" action="">
-                <p id="login_error">
-                    <?= $login_error; ?>
-                </p>
-
                 <div class="group">
+                    <p>
+                        <?= $login_error; ?>
+                    </p>
                     <input id="email" name="email" type="email" placeholder="Email" value="<?= $email; ?>" required />
                 </div>
 
@@ -67,6 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <button type="submit" value="submit">Login</button>
             </form>
+            <p id="register-link">Don't have an account?
+                <a href="./register.php">Register</a>
+            </p>
         </div>
     </div>
 

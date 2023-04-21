@@ -9,6 +9,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: #3066be;
+  /* centering our form container */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,47 +30,59 @@ h1 {
 
 form {
   margin: 0 auto;
-  padding: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
 }
 
 .group {
   width: 75%;
   padding: 10px;
+  margin: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-p {
+.group p {
   color: red;
   margin: 0;
   padding: 0;
 }
 
+/* inputs */
 #email,
 #password {
   width: 100%;
   border: 1px solid black;
 }
-
 #color {
   width: 80%;
   cursor: pointer;
+  text-align-last: center;
   border: 1px solid black;
 }
 
-button {
+form button {
   width: 20%;
+  margin: 10px;
   color: white;
   background-color: #3066be;
   cursor: pointer;
   transition-duration: 0.5s;
   border: 1px solid black;
 }
-button:hover {
+form button:hover {
   transform: scale(1.03);
+}
+
+#login-link {
+  color: black;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+}
+#login-link a {
+  color: #3066be;
+  text-decoration: none;
 }
