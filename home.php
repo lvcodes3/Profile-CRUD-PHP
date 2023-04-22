@@ -28,39 +28,41 @@ if (!isset($_SESSION["profile_crud_php"]["logged_in"]) || $_SESSION["profile_cru
                 <a id="logout" href="./logic/logout.php">Logout</a>
             </div>
         </header>
-        <br>
         <div class="container">
             <div class="content">
-                <h1>
-                    Welcome Back,
-                    <?= $_SESSION["profile_crud_php"]["email"]; ?>
-                </h1>
+                <label for="email">Email:</label>
+                <input id="email" name="email" type="text" value="<?= $_SESSION["profile_crud_php"]["email"]; ?>" />
             </div>
             <div class="content">
-                <h2>
-                    Your favorite color is
-                    <?= $_SESSION["profile_crud_php"]["color"]; ?>.
-                </h2>
+                <label for="email">Favorite Color:</label>
+                <input id="color" name="color" type="text" value="<?= $_SESSION["profile_crud_php"]["color"]; ?>" />
             </div>
-
+            <div class="content">
+                <button id="delete-btn" onclick="handleDeleteAccount('<?= $_SESSION['profile_crud_php']['email']; ?>')">
+                    Delete Account
+                </button>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript">
 
-        /*
-        const handleLogout = () => {
-            let req = new XMLHttpRequest();
-            req.open("GET", "./logic/logout.php");
-            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            req.send();
-            req.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    console.log(this.responseText);
+
+        const handleDeleteAccount = (email) => {
+            if (confirm("Are you sure you want to delete your account?")) {
+                let req = new XMLHttpRequest();
+                req.open("POST", "./logic/delete.php");
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.send(`email=${email}`);
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        alert(this.responseText);
+                        window.location.reload();
+                    }
                 }
             }
         }
-        */
+
 
     </script>
 </body>

@@ -19,6 +19,7 @@ header {
   align-items: center;
   background-color: #3066be;
   border: 3px solid black;
+  margin-bottom: 5px;
 }
 #main {
   margin: 0;
@@ -47,4 +48,15 @@ header {
   justify-content: center;
   align-items: center;
   border: 3px solid black;
+}
+
+#delete-btn {
+  color: white;
+  background-color: red;
+  cursor: pointer;
+  transition-duration: 0.5s;
+  border: 1px solid black;
+}
+#delete-btn:hover {
+  transform: scale(1.03);
 }
