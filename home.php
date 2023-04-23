@@ -29,13 +29,40 @@ if (!isset($_SESSION["profile_crud_php"]["logged_in"]) || $_SESSION["profile_cru
             </div>
         </header>
         <div class="container">
+            <h1>Profile</h1>
             <div class="content">
                 <label for="email">Email:</label>
-                <input id="email" name="email" type="text" value="<?= $_SESSION["profile_crud_php"]["email"]; ?>" />
+                <input id="email" type="text" value="<?= $_SESSION["profile_crud_php"]["email"]; ?>" readonly />
             </div>
             <div class="content">
                 <label for="email">Favorite Color:</label>
-                <input id="color" name="color" type="text" value="<?= $_SESSION["profile_crud_php"]["color"]; ?>" />
+                <select id="color" disabled>
+                    <option value="<?= $_SESSION["profile_crud_php"]["color"]; ?>" selected>
+                        <?= $_SESSION["profile_crud_php"]["color"]; ?>
+                    </option>
+                    <option value="black">Black</option>
+                    <option value="white">White</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="blue">Blue</option>
+                    <option value="pink">Pink</option>
+                    <option value="gray">Gray</option>
+                    <option value="brown">Brown</option>
+                    <option value="orange">Orange</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <div id="edit-content" class="content">
+                <button id="edit-btn" onclick="handleEdit()">
+                    Edit Account
+                </button>
+            </div>
+            <div id="update-content" class="content" style="display:none">
+                <button id="update-btn"
+                    onclick="handleUpdate('<?= $_SESSION['profile_crud_php']['email']; ?>', document.getElementById('color').value)">
+                    Update Account
+                </button>
             </div>
             <div class="content">
                 <button id="delete-btn" onclick="handleDeleteAccount('<?= $_SESSION['profile_crud_php']['email']; ?>')">
@@ -47,6 +74,15 @@ if (!isset($_SESSION["profile_crud_php"]["logged_in"]) || $_SESSION["profile_cru
 
     <script type="text/javascript">
 
+        const handleEdit = () => {
+            document.getElementById("color").disabled = false;
+            document.getElementById("update-content").style.display = "";
+            document.getElementById("edit-content").style.display = "none";
+        }
+
+        const handleUpdate = (email, color) => {
+
+        }
 
         const handleDeleteAccount = (email) => {
             if (confirm("Are you sure you want to delete your account?")) {

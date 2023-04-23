@@ -50,6 +50,32 @@ header {
   border: 3px solid black;
 }
 
+.content {
+  padding-bottom: 20px;
+}
+
+#edit-btn {
+  color: white;
+  background-color: #3066be;
+  cursor: pointer;
+  transition-duration: 0.5s;
+  border: 1px solid black;
+}
+#edit-btn:hover {
+  transform: scale(1.03);
+}
+
+#update-btn {
+  color: white;
+  background-color: green;
+  cursor: pointer;
+  transition-duration: 0.5s;
+  border: 1px solid black;
+}
+#update-btn:hover {
+  transform: scale(1.03);
+}
+
 #delete-btn {
   color: white;
   background-color: red;
